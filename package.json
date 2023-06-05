@@ -1,0 +1,19 @@
+{
+  "name": "backendshoe",
+  "version": "1.0.0",
+  "description": "This is a trial for server connection",
+  "main": "index.js",
+  "scripts": {
+    "devStart": "nodemon server.js"
+  },
+  "author": "Md Arif",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.1.3",
+    "express": "^4.18.2",
+    "mongoose": "^7.2.2",
+    "nodemon": "^2.0.22"
+  },
+  "type": "module"
+}
