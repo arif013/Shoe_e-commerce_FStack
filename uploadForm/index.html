@@ -1,0 +1,21 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload data here</title>
+    <!-- <link rel="stylesheet" href="/css/styles.css" /> -->
+  </head>
+  <body>
+    <form action="/uploadform" method="post" enctype="multipart/form-data">
+        <label for="fname">First name: </label>
+        <input type="text" id="fname" name="fname"><br><br>
+        <label for="lname">Last name: </label>
+        <input type="text" id="lname" name="lname"><br><br>
+        <input type="file" name="image"  alt="Submit" width="48" height="48">
+        <button type="submit">Upload</button>
+      </form>
+    <!-- <script src="./js/index.js"></script> -->
+  </body>
+</html>

@@ -36,12 +36,44 @@ app.get("/",(req,res)=>{
     ).catch(err=>console.log(err))
     // res.send("express here")
 })
-// const db = mongoose.connection
-// db.on('error',(error)=>console.error(error));
-// db.once('open',()=>console.log('connected to database'));
 
-// const mainapp = require('./app');
-// import mainapp from './app.js'
-// app.use('/app', mainapp);
+
+
+// Static page for form to upload data
+import path from 'path'
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.use('/uploadform', express.static(path.join(__dirname, 'uploadForm')));
+
+// Using multer to upload data to db
+import multer from 'multer'
+
+const storage = multer.diskStorage({
+  destination: function(req, file, cb){
+    return cb(null, "./uploads");
+  },
+  filename: function (req, file, cb){
+    return cb(null, `${Date.now()}-${file.originalname}`)
+  },
+});
+const upload = multer({ storage: storage})
+app.set("view engine", "html")
+app.set("views", path.resolve("./uploadForm/views"))
+
+// const upload = multer({ dest: 'uploads/' })
+
+app.post("/uploadform",upload.single('image'),(req,res)=>{
+  console.log(req.body);
+  console.log(req.file);
+
+  return res.redirect("/uploadform")
+})
+
+
+
+
 
 app.listen(3000,()=>console.log('Server started'));
