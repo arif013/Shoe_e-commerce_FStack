@@ -9,10 +9,15 @@
   </head>
   <body>
     <form action="/uploadform" method="post" enctype="multipart/form-data">
-        <label for="fname">First name: </label>
-        <input type="text" id="fname" name="fname"><br><br>
-        <label for="lname">Last name: </label>
-        <input type="text" id="lname" name="lname"><br><br>
+        <label for="fname">Title: </label>
+        <input type="text" id="title" name="title"><br><br>
+        <label for="lname">Price: </label>
+        <input type="text" id="lname" name="price"><br><br>
+        <label for="lname">Gender: </label>
+          <input type="radio" name="gender" value="male"> Male
+          <input type="radio" name="gender" value="female"> Female<br><br>
+        <label for="lname">Description: </label>
+        <textarea type="text" id="desc" name="desc" rows="10" cols="20"></textarea><br><br>
         <input type="file" name="image"  alt="Submit" width="48" height="48">
         <button type="submit">Upload</button>
       </form>

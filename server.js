@@ -26,6 +26,8 @@ const shoeSchema = new mongoose.Schema({
     id: Number,
     title: String,
     price: Number,
+    gender: String,
+    desc: String,
     url: String,
 })
 const man = mongoose.model("man", shoeSchema)
@@ -49,28 +51,60 @@ const __dirname = path.dirname(__filename);
 app.use('/uploadform', express.static(path.join(__dirname, 'uploadForm')));
 
 // Using multer to upload data to db
-import multer from 'multer'
+import multer from 'multer';
+import { log } from 'console';
+// import mongoose from 'mongoose';
 
 const storage = multer.diskStorage({
-  destination: function(req, file, cb){
+  destination: function (req, file, cb) {
     return cb(null, "./uploads");
   },
-  filename: function (req, file, cb){
-    return cb(null, `${Date.now()}-${file.originalname}`)
+  filename: function (req, file, cb) {
+    return cb(null, `${Date.now()}-${file.originalname}`);
   },
 });
-const upload = multer({ storage: storage})
-app.set("view engine", "html")
-app.set("views", path.resolve("./uploadForm/views"))
 
-// const upload = multer({ dest: 'uploads/' })
+const upload = multer({ storage: storage });
+app.set("view engine", "html");
+app.set("views", path.resolve("./uploadForm/views"));
 
-app.post("/uploadform",upload.single('image'),(req,res)=>{
+// Connect to MongoDB
+mongoose.connect(process.env.DATABASE_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+
+const Shoe = mongoose.model('Shoe', shoeSchema);
+
+app.post("/uploadform", upload.single('image'), (req, res) => {
   console.log(req.body);
+  // console.log(req.body);
   console.log(req.file);
 
-  return res.redirect("/uploadform")
-})
+  // Create a new shoe document
+  const shoe = new Shoe({
+    title: req.body.title,
+    price: req.body.price,
+    gender: req.body.gender,
+    desc: req.body.desc,
+    image: req.file.filename,
+  });
+
+  // Save the shoe document to the database using promises
+  shoe.save()
+    .then(() => {
+      console.log('Shoe data saved successfully');
+      return res.redirect("/uploadform");
+    })
+    .catch((err) => {
+      console.error(err);
+      return res.status(500).send('Error saving shoe data');
+    });
+});
+
 
 
 
